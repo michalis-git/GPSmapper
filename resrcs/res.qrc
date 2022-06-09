@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>GoogleMapsWebView-1.html</file>
+        <file>gmapsCode.js</file>
+        <file>watertower.png</file>
+        <file>spring.png</file>
+        <file>remove.png</file>
+        <file>undo.png</file>
+        <file>gpsmapper_logo.png</file>
+        <file>mapper_icon.png</file>
+    </qresource>
+</RCC>
