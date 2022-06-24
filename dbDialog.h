@@ -6,16 +6,16 @@
 #include <QDir>
 
 namespace Ui {
-class C_Dialog;
+class DbDialog;
 }
 
-class C_Dialog : public QDialog
+class DbDialog : public QDialog
 {
     Q_OBJECT
     
 public:
-    explicit C_Dialog(QWidget *parent = 0);
-    ~C_Dialog();
+    explicit DbDialog(QWidget *parent = 0);
+    ~DbDialog();
     void setFileName(QString fileName);
 
 signals:
@@ -23,7 +23,7 @@ signals:
     void sendParam(QString filePath, QString dbName1);
     
 private:
-    Ui::C_Dialog *ui;
+    Ui::DbDialog *ui;
     MainWindow *my_mainwindow;
     QString filePath;
     QDir directory;

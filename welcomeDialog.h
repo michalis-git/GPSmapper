@@ -19,7 +19,7 @@ public:
 private:
     Ui::WelcomeDialog *ui;
     NmeaDialog *m_nmeaDialog;
-    C_Dialog *m_cDialog;
+    DbDialog *m_cDialog;
 
 private slots:
     void openNextDialog();

@@ -1,5 +1,5 @@
 #include "nmeaDialog.h"
-#include "nmeaDialog.h"
+#include "ui_nmeaDialog.h"
 #include <QFileDialog>
 #include <QDir>
 #include <QMessageBox>
@@ -26,7 +26,7 @@ void NmeaDialog::openNextDialog()
     qDebug() << "apo dialogB: " << fileName;
     if(!ui->lineEdit->text().isEmpty())
     {
-        my_c_dialog = new C_Dialog;
+        my_c_dialog = new DbDialog;
         my_c_dialog->setFileName(fileName);
         my_c_dialog->show();
         my_c_dialog->activateWindow();

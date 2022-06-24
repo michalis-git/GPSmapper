@@ -44,7 +44,7 @@ SOURCES += main.cpp\
     recorddialog.cpp \
     querydialog.cpp \
     editdialog.cpp \
-    c_dialog.cpp \
+    dbDialog.cpp \
     nmeaDialog.cpp \
     welcomeDialog.cpp
 
@@ -54,7 +54,7 @@ HEADERS  += \
     recorddialog.h \
     querydialog.h \
     editdialog.h \
-    c_dialog.h \
+    dbDialog.h \
     nmeaDialog.h \
     welcomeDialog.h
 
@@ -64,7 +64,7 @@ FORMS    += \
     recorddialog.ui \
     querydialog.ui \
     editdialog.ui \
-    c_dialog.ui \
+    dbDialog.ui \
     nmeaDialog.ui \
     welcomeDialog.ui
 

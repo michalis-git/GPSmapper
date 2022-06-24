@@ -5,8 +5,7 @@
 
 WelcomeDialog::WelcomeDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::WelcomeDialog)
-{
+    ui(new Ui::WelcomeDialog) {
     ui->setupUi(this);
     setWindowFlags( Qt::CustomizeWindowHint );
     connect(ui->exitButton, SIGNAL(clicked()), this, SLOT(onExitClicked()));
@@ -28,7 +27,7 @@ void WelcomeDialog::openNextDialog() {
     connect(m_nmeaDialog, SIGNAL(showPreviousDialog()), this, SLOT(show()));
     ;
   } else if (dbPath.isEmpty()) {
-    m_cDialog = new C_Dialog;
+    m_cDialog = new DbDialog;
     m_cDialog->show();
     m_cDialog->activateWindow();
     this->hide();

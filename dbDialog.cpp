@@ -1,13 +1,13 @@
-#include "c_dialog.h"
-#include "ui_c_dialog.h"
+#include "dbDialog.h"
+#include "ui_dbDialog.h"
 #include <QFileDialog>
 #include<QDebug>
 #include<QMessageBox>
 #include <QSettings>
 
-C_Dialog::C_Dialog(QWidget *parent) :
+DbDialog::DbDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::C_Dialog) {
+    ui(new Ui::DbDialog) {
   ui->setupUi(this);
   setWindowFlags( Qt::CustomizeWindowHint );
   connect(ui->toolButton, SIGNAL(clicked()), this, SLOT(selectFile()));
@@ -15,16 +15,16 @@ C_Dialog::C_Dialog(QWidget *parent) :
   connect(ui->finishButton, SIGNAL(clicked()), this, SLOT(finishDialog()));
 }
 
-void C_Dialog::setFileName(QString fileName) {
+void DbDialog::setFileName(QString fileName) {
   filePath = fileName;
 }
 
-void C_Dialog::openPreviousDialog() {
+void DbDialog::openPreviousDialog() {
   emit showPreviousDialog();
   this->close();
 }
 
-void C_Dialog::selectFile() {
+void DbDialog::selectFile() {
   dbName = QFileDialog::getOpenFileName(this,
                                         tr("Open DataBase file"), ".",
                                         tr("SQLITE database (*sqlite)"));
@@ -40,7 +40,7 @@ void C_Dialog::selectFile() {
 
 }
 
-void C_Dialog::finishDialog() {
+void DbDialog::finishDialog() {
   qDebug() << "apo dialogB: " << fileName << dbName;
   if(!ui->lineEdit->text().isEmpty()) {
     my_mainwindow = new MainWindow(0, filePath, dbName);
@@ -56,7 +56,7 @@ void C_Dialog::finishDialog() {
 
 }
 
-C_Dialog::~C_Dialog()
+DbDialog::~DbDialog()
 {
   delete ui;
 }

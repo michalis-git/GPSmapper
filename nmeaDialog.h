@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QFileDialog>
 #include <QDir>
-#include "c_dialog.h"
+#include "dbDialog.h"
 
 namespace Ui {
   class NmeaDialog;
@@ -23,7 +23,7 @@ signals:
     
 private:
     Ui::NmeaDialog *ui;
-    C_Dialog *my_c_dialog;
+    DbDialog *my_c_dialog;
     QDir directory;
     QDir currentDir;
     QString fileName;
