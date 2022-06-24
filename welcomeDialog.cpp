@@ -1,11 +1,11 @@
-#include "a_dialog.h"
-#include "ui_a_dialog.h"
+#include "welcomeDialog.h"
+#include "ui_welcomeDialog.h"
 #include <QMessageBox>
 #include <QSettings>
 
-A_Dialog::A_Dialog(QWidget *parent) :
+WelcomeDialog::WelcomeDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::A_Dialog)
+    ui(new Ui::WelcomeDialog)
 {
     ui->setupUi(this);
     setWindowFlags( Qt::CustomizeWindowHint );
@@ -14,18 +14,18 @@ A_Dialog::A_Dialog(QWidget *parent) :
 
 }
 
-void A_Dialog::openNextDialog() {
+void WelcomeDialog::openNextDialog() {
   QSettings settings;
   QString nmeaPath = settings.value("NmeaPath").toString();
   QString dbPath   = settings.value("DbPath").toString();
 
   if (nmeaPath.isEmpty()) {
-    my_b_dialog = new B_Dialog;
-    my_b_dialog->show();
-    my_b_dialog->activateWindow();
+    m_nmeaDialog = new NmeaDialog;
+    m_nmeaDialog->show();
+    m_nmeaDialog->activateWindow();
     this->hide();
     //    ONLY after  the creation of object for child class
-    connect(my_b_dialog, SIGNAL(showPreviousDialog()), this, SLOT(show()));
+    connect(m_nmeaDialog, SIGNAL(showPreviousDialog()), this, SLOT(show()));
     ;
   } else if (dbPath.isEmpty()) {
     m_cDialog = new C_Dialog;
@@ -35,8 +35,7 @@ void A_Dialog::openNextDialog() {
   }
 }
 
-void A_Dialog::onExitClicked()
-{
+void WelcomeDialog::onExitClicked() {
     int ret = QMessageBox::warning(this, tr("My Application"),
                                    tr("Are you sure yoy want to exit?"),
                                    QMessageBox::Ok | QMessageBox::Cancel);
@@ -55,7 +54,6 @@ void A_Dialog::onExitClicked()
      }
 }
 
-A_Dialog::~A_Dialog()
-{
+WelcomeDialog::~WelcomeDialog() {
     delete ui;
 }

@@ -317,8 +317,7 @@ void MainWindow::getCatQuery(QStringList catList)
 }
 
 //Edits the specified row of the DB and updates the specified marker on the map.
-void MainWindow::editRowOfDB(QString idStr, QString x, QString y, QString h, QString adr, QString com, QString cat)
-{
+void MainWindow::editRowOfDB(QString idStr, QString x, QString y, QString h, QString adr, QString com, QString cat) {
   if (db.isOpen())
   {
     QSqlQuery query;
@@ -331,8 +330,7 @@ void MainWindow::editRowOfDB(QString idStr, QString x, QString y, QString h, QSt
 }
 
 //Inserts a new row in the DB.
-int MainWindow::insertRowToDB(QString E, QString N, QString H, QString adrs, QString cmnts, QString catID)
-{
+int MainWindow::insertRowToDB(QString E, QString N, QString H, QString adrs, QString cmnts, QString catID) {
   int newId = -1;
   bool ret = false;
 

@@ -1,5 +1,5 @@
-#ifndef B_DIALOG_H
-#define B_DIALOG_H
+#ifndef NMEADIALOG_H
+#define NMEADIALOG_H
 
 #include <QDialog>
 #include <QFileDialog>
@@ -7,23 +7,22 @@
 #include "c_dialog.h"
 
 namespace Ui {
-class B_Dialog;
+  class NmeaDialog;
 }
 
 
-class B_Dialog : public QDialog
-{
+class NmeaDialog : public QDialog {
     Q_OBJECT
     
 public:
-    explicit B_Dialog(QWidget *parent = 0);
-    ~B_Dialog();
+    explicit NmeaDialog(QWidget *parent = 0);
+    ~NmeaDialog();
 
 signals:
     void showPreviousDialog();
     
 private:
-    Ui::B_Dialog *ui;
+    Ui::NmeaDialog *ui;
     C_Dialog *my_c_dialog;
     QDir directory;
     QDir currentDir;
@@ -38,4 +37,4 @@ private slots:
     void selectFile();
 };
 
-#endif // B_DIALOG_H
+#endif // NMEADIALOG_H

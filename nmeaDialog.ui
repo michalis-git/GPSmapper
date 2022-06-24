@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>B_Dialog</class>
- <widget class="QDialog" name="B_Dialog">
+ <class>NmeaDialog</class>
+ <widget class="QDialog" name="nmeaDialog">
   <property name="geometry">
    <rect>
     <x>0</x>

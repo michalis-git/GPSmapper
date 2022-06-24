@@ -1,4 +1,4 @@
-#include "a_dialog.h"
+#include "welcomeDialog.h"
 #include <QApplication>
 #include <QSettings>
 //#include <QtWebKit/QGraphicsWebView>
@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
   QString dbPath   = settings.value("DbPath").toString();
   MainWindow mainWindow(0, nmeaPath, dbPath);
 
-  A_Dialog w;
+  WelcomeDialog w;
   if (nmeaPath.isEmpty() || dbPath.isEmpty()) {
     w.show();
   } else {

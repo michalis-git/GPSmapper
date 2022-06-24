@@ -45,8 +45,8 @@ SOURCES += main.cpp\
     querydialog.cpp \
     editdialog.cpp \
     c_dialog.cpp \
-    b_dialog.cpp \
-    a_dialog.cpp
+    nmeaDialog.cpp \
+    welcomeDialog.cpp
 
 HEADERS  += \
     mainwindow.h \
@@ -55,8 +55,8 @@ HEADERS  += \
     querydialog.h \
     editdialog.h \
     c_dialog.h \
-    b_dialog.h \
-    a_dialog.h
+    nmeaDialog.h \
+    welcomeDialog.h
 
 FORMS    += \
     mainwindow.ui \
@@ -65,8 +65,8 @@ FORMS    += \
     querydialog.ui \
     editdialog.ui \
     c_dialog.ui \
-    b_dialog.ui \
-    a_dialog.ui
+    nmeaDialog.ui \
+    welcomeDialog.ui
 
 QT += opengl
 #CONFIG += QwtDll
