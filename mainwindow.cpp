@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent, QString nmeaFilePath1, QString dbFilePat
 
   //Opens and reads the specified NMEA file every 2 seconds
   filePathPublic = nmeaFilePath1;
+  qDebug() << filePathPublic;
   QTimer *timer = new QTimer(this);
   connect(timer, SIGNAL(timeout()), this, SLOT(getNMEAcoords()));
   timer->start(2000);
@@ -41,7 +42,8 @@ MainWindow::MainWindow(QWidget *parent, QString nmeaFilePath1, QString dbFilePat
 
   QWebEnginePage *page = ui->widget->page();
   populateJavaScriptWindowObject();
-  page->load(QUrl(QUrl::fromLocalFile("/Users/mikeo/Developer/mapper/resrcs/GoogleMapsWebView-1.html")));
+  page->load(QUrl(QUrl::fromLocalFile("/Users/mikeo/Developer/personal/mapper/resrcs/GoogleMapsWebView-1.html")));
+//  page->load(QUrl(":/new/prefix1/GoogleMapsWebView-1.html"));
   connect(page, &QWebEnginePage::loadFinished, this, &MainWindow::populateJavaScriptWindowObject);
 
   num = -1;
@@ -157,10 +159,11 @@ void MainWindow::setMe(QString strN, QString strE) {
 }
 
 //Reads the NMEA file and gets the user's location.
-void MainWindow::getNMEAcoords()
-{
+void MainWindow::getNMEAcoords() {
+  qDebug() << "getNMEAcoords";
   QFile data(filePathPublic);
   if (data.open(QFile::ReadOnly)) {
+    qDebug() << "data.opened";
     QString str = data.readAll();
     QString strN1 = str.right(54);
     strN = strN1.left(9);
@@ -181,7 +184,9 @@ void MainWindow::getNMEAcoords()
     strE = QString("%1").arg(EdegDec, 0, 'f', 8);
     strN = QString("%1").arg(NdegDec, 0, 'f', 8);
     ui->positionLineEdit->setText(strE + ", " + strN);
+    qDebug() << strN << strE;
     setMe(strN, strE);
+    data.close();
   }
 }
 

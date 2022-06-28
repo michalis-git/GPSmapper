@@ -75,7 +75,6 @@ RESOURCES += \
     resrcs/res.qrc
 
 OTHER_FILES += \
-    gmapsCode.js \
     resrcs/gmapsCode.js
 
 DISTFILES +=
