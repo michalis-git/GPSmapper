@@ -1,7 +1,6 @@
 #include "welcomeDialog.h"
 #include <QApplication>
 #include <QSettings>
-//#include <QtWebKit/QGraphicsWebView>
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);

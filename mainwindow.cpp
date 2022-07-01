@@ -12,11 +12,8 @@
 
 MainWindow::MainWindow(QWidget *parent, QString nmeaFilePath1, QString dbFilePath1) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
+    ui(new Ui::MainWindow) {
   ui->setupUi(this);
-  //    setWindowFlags( Qt::CustomizeWindowHint );
-
 
   //Opens the specified DB file after 3 seconds
   dbNamePublic = dbFilePath1;
@@ -58,8 +55,7 @@ void MainWindow::populateJavaScriptWindowObject() {
 }
 
 //Opens the DB file
-void MainWindow::openDB()
-{
+void MainWindow::openDB() {
   // Find QSLite driver
   db = QSqlDatabase::addDatabase("QSQLITE");
 
@@ -72,12 +68,12 @@ void MainWindow::openDB()
   //    #endif
 
   // Open databasee
-  db.open();
-  if (db.open()==true) {
-    //        qDebug() << "anoi3e";
-    emit dbIsOpen();
+  if (!db.open()) {
+    QMessageBox::critical(this, tr("My Application"),
+                          tr("Failed to open database"),
+                          QMessageBox::Ok);
   } else {
-    qDebug() << "den anoi3e";
+    emit dbIsOpen();
   }
 }
 
@@ -85,17 +81,14 @@ void MainWindow::openDB()
 void MainWindow::getDBentries() {
   int id, catNum = 0;
   QSqlQuery query(QString("SELECT ROWID from location order by ROWID DESC limit 1"));
-  if (query.next()) {
+  if (query.next())
     catNum = query.value(0).toInt();
-  }
   query.clear();
 
   QString locE,locN;
-  for (id = 1; id <= catNum; id++)
-  {
+  for (id = 1; id <= catNum; id++) {
     query = QSqlQuery(QString("select * from location where id = %1").arg(id));
-    if (query.first())
-    {
+    if (query.first()) {
       QString locationID = query.value(0).toString();
       QString locationE = query.value(1).toString();
       QString locationN = query.value(2).toString();
@@ -104,7 +97,6 @@ void MainWindow::getDBentries() {
       QString locationCmnts = query.value(5).toString();
       QString locationCat = query.value(6).toString();
       insertMarker(locationID, locationE, locationN, locationH, locationAdrs, locationCmnts, locationCat);
-      //            qDebug() << ")))" << locationID << locationE << locationN << locationH << locationAdrs << locationCmnts << locationCat;
       locE = locationE;
       locN = locationN;
     }
@@ -132,16 +124,15 @@ void MainWindow::onSettingsClicked() {
 }
 
 //Draws a marker on the map.
-void MainWindow::insertMarker(QString id, QString E, QString N, QString H, QString adrs, QString cmnts, QString cat)
-{
+void MainWindow::insertMarker(QString id,
+                              QString E, QString N, QString H,
+                              QString adrs, QString cmnts, QString cat) {
   num++;
   QString catName;
   QString queryText = QString("SELECT * FROM category WHERE catID=%1;").arg(cat);
   QSqlQuery query(queryText);
   if (query.next())
-  {
     catName = query.value(1).toString();
-  }
   query.clear();
 
   QString xyStr = (E + ", " + N);
@@ -153,17 +144,14 @@ void MainWindow::insertMarker(QString id, QString E, QString N, QString H, QStri
 
 //Moves the user's marker on the map, according to the received coordinates (every 2 seconds).
 void MainWindow::setMe(QString strN, QString strE) {
-//  qDebug() << strN << strE;
   QString command = "MoveMe(" + strN + "," + strE +");";
   sendToGMaps(command);
 }
 
 //Reads the NMEA file and gets the user's location.
 void MainWindow::getNMEAcoords() {
-  qDebug() << "getNMEAcoords";
   QFile data(filePathPublic);
   if (data.open(QFile::ReadOnly)) {
-    qDebug() << "data.opened";
     QString str = data.readAll();
     QString strN1 = str.right(54);
     strN = strN1.left(9);
@@ -183,9 +171,10 @@ void MainWindow::getNMEAcoords() {
     NdegDec = Ndeg + (Nmin/60);
     strE = QString("%1").arg(EdegDec, 0, 'f', 8);
     strN = QString("%1").arg(NdegDec, 0, 'f', 8);
+
     ui->positionLineEdit->setText(strE + ", " + strN);
-    qDebug() << strN << strE;
     setMe(strN, strE);
+
     data.close();
   }
 }
@@ -203,8 +192,7 @@ void MainWindow::recordDialogOpens()
 }
 
 //Creates the Query Dialog.
-void MainWindow::queryDialogOpens()
-{
+void MainWindow::queryDialogOpens() {
   my_queryDialog = new queryDialog;
   QStringList strList = getCategories();
   my_queryDialog->getData(strList);
@@ -216,14 +204,9 @@ void MainWindow::queryDialogOpens()
 
 //Creates Edit Dialog.
 void MainWindow::onEditClicked(QString idStr) {
-  qDebug() << "onEditClicked";
-  //    QString command = ("ReturnTextToQT();");
-  //    QString idStr = sendToGMaps(command).toString();
-
   my_editDialog = new editDialog;
   QSqlQuery query = QSqlQuery(QString("select * from location where id = %1").arg(idStr));
-  if(query.first())
-  {
+  if(query.first()) {
     QString x = query.value(1).toString();
     QString y = query.value(2).toString();
     QString h = query.value(3).toString();
@@ -249,20 +232,16 @@ QStringList MainWindow::getCategories() {
   QSqlQuery query(QString("SELECT ROWID from category order by ROWID DESC limit 1"));
   if (query.next()) {
     catNum = query.value(0).toInt();
-    qDebug() << catNum << "--";
   } else {
     qDebug() << query.result();
   }
   query.clear();
+
   QStringList strList;
-  for (id = 1; id <= catNum; id++)
-  {
-    qDebug() << id << "++";
+  for (id = 1; id <= catNum; id++) {
     query = QSqlQuery(QString("select * from category where catID = %1").arg(id));
-    if (query.first())
-    {
+    if (query.first()) {
       QString catName = query.value(1).toString();
-      qDebug() << catName << "***";
       strList.append(catName);
     }
   }
@@ -270,42 +249,39 @@ QStringList MainWindow::getCategories() {
 }
 
 //Gets data from the Record Dialog.
-void MainWindow::getData(QString E, QString N, QString H, QString adrs, QString cmnts, QString id)
-{
+void MainWindow::getData(QString E, QString N, QString H,
+                         QString adrs, QString cmnts, QString id) {
   insertRowToDB(E,N,H,adrs,cmnts,id);
 }
 
 //Gets data from the Edit Dialog.
-void MainWindow::getEditedData(QString idStr, QString x, QString y, QString h, QString adr, QString com, QString cat)
-{
+void MainWindow::getEditedData(QString idStr,
+                               QString x, QString y, QString h,
+                               QString adr, QString com, QString cat) {
   editRowOfDB(idStr, x,y,h,adr,com,cat);
   QString command = QString("RemoveMarker(%1);").arg(idStr);
   sendToGMaps(command);
-  qDebug() << "on ok clicked: " <<  idStr << x << y << h << adr << com << cat;
   insertMarker(idStr, x,y,h,adr,com,cat);
 }
 
 //Gets the data from Query Dialog and makes a query to the DB.
-void MainWindow::getCatQuery(QStringList catList)
-{
+void MainWindow::getCatQuery(QStringList catList) {
   num = -1;
   int listLength = catList.count();
   int i;
+
   QString catStr = "";
-  for(i=0; i<listLength; i++)
-  {
+  for(i=0; i<listLength; i++) {
     catStr.append(QString("'%1',").arg(catList.value(i)));
   }
-  catStr = catStr.left(catStr.length()-1);
-  qDebug() << "catstr: " << catStr;
+  catStr = catStr.left(catStr.length() - 1);
 
   QString command = QString("ClearMap()");
   sendToGMaps(command);
 
   QString queryText = QString("SELECT * FROM location AS L JOIN category AS C ON L.cat=C.catid WHERE C.name IN (%1);").arg(catStr);
   QSqlQuery query = QSqlQuery(queryText);
-  while(query.next())
-  {
+  while(query.next()) {
     QString id = query.value(0).toString();
     QString E = query.value(1).toString();
     QString N = query.value(2).toString();
@@ -323,8 +299,7 @@ void MainWindow::getCatQuery(QStringList catList)
 
 //Edits the specified row of the DB and updates the specified marker on the map.
 void MainWindow::editRowOfDB(QString idStr, QString x, QString y, QString h, QString adr, QString com, QString cat) {
-  if (db.isOpen())
-  {
+  if (db.isOpen()) {
     QSqlQuery query;
     QString queryText = QString("UPDATE location SET x = '%2', y = '%3', h = '%4', address ='%5',comments = '%6' WHERE id = '%1'")
                             .arg(idStr).arg(x).arg(y).arg(h).arg(adr).arg(com);
@@ -339,16 +314,14 @@ int MainWindow::insertRowToDB(QString E, QString N, QString H, QString adrs, QSt
   int newId = -1;
   bool ret = false;
 
-  if (db.isOpen())
-  {
+  if (db.isOpen()) {
     // NULL = is the keyword for the autoincrement to generate next value
     QSqlQuery query;
     ret = query.exec(QString("insert into location values(NULL, '%1', '%2', %3, '%4', '%5', %6)")
                          .arg(E).arg(N).arg(H).arg(adrs).arg(cmnts).arg(catID));
 
     // Get database given autoincrement value
-    if (ret)
-    {
+    if (ret) {
       newId = query.lastInsertId().toInt();
     }
 
@@ -358,10 +331,8 @@ int MainWindow::insertRowToDB(QString E, QString N, QString H, QString adrs, QSt
   return newId;
 }
 
-void MainWindow::removeRowFromDB(QString j)
-{
-  if (db.isOpen())
-  {
+void MainWindow::removeRowFromDB(QString j) {
+  if (db.isOpen()) {
     QSqlQuery query;
     QString queryText = QString("DELETE FROM location WHERE id = '%1'").arg(j);
     qDebug() << "delete: " << queryText;
@@ -378,11 +349,6 @@ void MainWindow::sendToGMaps(QString command) {
   webView->settings()->setAttribute(QWebEngineSettings::JavascriptEnabled, true);
   webView->settings()->setAttribute(QWebEngineSettings::AutoLoadImages, true);
   webView->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-  //    ui->webView->page()->mainFrame()->evaluateJavaScript(command);
-  //    variant = ui->webView->page()->mainFrame()->evaluateJavaScript(command);
-  //    return ui->webView->page()->evaluateJavaScript(command);
-
-
 
   QWebEnginePage *page = webView->page();
   page->runJavaScript(command, [](const QVariant &result) {
@@ -390,27 +356,16 @@ void MainWindow::sendToGMaps(QString command) {
   });
 }
 
-void MainWindow::onExitClicked()
-{
+void MainWindow::onExitClicked() {
   int ret = QMessageBox::warning(this, tr("My Application"),
                                  tr("Are you sure you want to exit?"),
                                  QMessageBox::Ok | QMessageBox::Cancel);
 
-  switch (ret) {
-    case QMessageBox::Ok:
-      // OK was clicked
-      this->close();
-      break;
-    case QMessageBox::Cancel:
-      // Cancel was clicked
-      break;
-    default:
-      // should never be reached
-      break;
-  }
+  if (ret == QMessageBox::Ok)
+    this->close();
+
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
   delete ui;
 }
